@@ -80,14 +80,14 @@
 				</section>
 				</section>
 				<section data-markdown>
-					## Pourquoi moi?
+					## Pourquoi j'ai regardé Docker?
 					* Ca fait le buzz
 					* Ca semble simplifier le deployement
 					* Ca semble faire beacoup plus
 					* J'ai eu besoin de tester des "outils"
 					* ... J'ai aussi testé Docker :)
 				</section>
-				<section>
+
 					<section >
 						<h2> C'est quoi Docker? </h2>
 						C'est une application.
@@ -119,6 +119,7 @@ Commands:
 
 						Pour Windows & Mac, il existe:
 						## [Boot2docker](http://boot2docker.io/)
+						(deprecated)
 
 ```
                   ##         .
@@ -139,16 +140,14 @@ Docker version 1.6.0, build 4749651
 docker@boot2docker:~$
 ```
 					</section>
-				</section>
-				<section>
-					<section>
-						<h2> C'est quoi Docker?</h2>
-						<h3>Docker Vs VM</h3>
-						<ul>
-							<li>L'hyperviseur simule une machine
-							<li>Les containeurs partage l'OS (le kernel) et isole le contexte d'exécution
-						</ul>
-						<p>
+
+					<section data-markdown>
+						## Docker Vs VM
+
+						- L'hyperviseur simule une machine
+						- Les containeurs partage l'OS (le kernel) et isole le contexte d'exécution
+
+
 					</section>
 					<section data-background="#add9e4">
 						<a href="http://pointful.github.io/docker-intro/#/13">
@@ -165,31 +164,66 @@ docker@boot2docker:~$
 						FROM ubuntu:14.04
 						MAINTAINER Kate Smith <ksmith@example.com>
 						RUN echo "Je peux raconter ma vie... "
-						RUN apt-get update
+						RUN apt-get -y update
 						```
 						### Image
 						```
-						docker build -t my-Docker-Image
+						docker build -t my-Docker-Image .
 						```
 						### Container
 						```
 						docker run my-Docker-Image /bin/echo 'Hello world'
 						```
 					</section>
+					<section data-markdown>
+						### Demo
+						- Mon premier Dockerfile:
+
+						```
+						# this is a comment
+						FROM ubuntu:14.04
+						RUN echo "Je peux raconter ma vie pendant le build"
+						RUN apt-get update -y
+						RUN echo "Le build est fini"
+						```
+						```
+						docker build --tag first-docker .
+						```
+						```
+						docker run first-docker
+						```
+					</section>
+					<section data-markdown>
+						### Demo (un peu mieux)
+						```
+						FROM first-docker:latest
+						CMD echo 'maintenant je fait quelque chose'
+
+						```
+					</section >
+					<section data-markdown>
+						### Demo (encore mieux)
+						```
+						FROM first-docker:latest
+						RUN apt-get update -y && apt-get install -y fortunes
+						CMD /usr/games/fortune -a | echo
+						```
+					</section >
 					<section >
-						<h3> Demo </h3>
+						<h3> Demo en vrai (si tout va bien)</h3>
 						<ul>
 							<li> -it / -d
 							<li> --port
 							<li> --volume
 						</ul>
-						<aside class="notes">
+					</section>
+						<section data-markdown>
 							- docker run -t -i ubuntu:14.04 /bin/bash
 							- docker run -d ubuntu:14.04 /bin/sh -c "while true; do echo hello world; sleep 1; done"
 							- docker logs insane_babbage
 							- docker run -d -P training/webapp python app.py
 							https://docs.docker.com/userguide/usingdocker/
-						</aside>
+						</section>
 					</section>
 				</section>
 				<section data-markdown>
